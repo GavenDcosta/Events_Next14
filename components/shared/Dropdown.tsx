@@ -1,6 +1,6 @@
 'use client'
 
-import { startTransition, useState } from "react"
+import { startTransition, useState, useEffect } from "react"
 
 import {
     Select,
@@ -26,6 +26,7 @@ import { Input } from "../ui/input"
 
 
 import { ICategory } from "@/lib/database/models/category.model"
+import { createCategory, getAllCategories } from "@/lib/actions/category.actions"
 
 type DropdownProps = {
     value?: string
@@ -38,8 +39,23 @@ const Dropdown = ({value , onChangeHandler}: DropdownProps) => {
     const [newCategory, setNewCategory] = useState("")
     
     const handleAddCategory = () => {
-
+       createCategory({
+        categoryName: newCategory.trim()
+       })
+       .then((category) => {
+        setCategories((prevState) => [...prevState, category])
+       })
     }
+
+    useEffect(() => {
+       const getCategories = async () => {
+        const categoryList = await getAllCategories()
+
+        categoryList && setCategories(categoryList as ICategory[])
+       }
+
+       getCategories()
+    }, [])
 
   return (
     <Select onValueChange={onChangeHandler} defaultValue={value}>
