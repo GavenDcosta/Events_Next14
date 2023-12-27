@@ -4,7 +4,7 @@ import { IEvent } from '@/lib/database/models/event.model'
 
 
 import { loadStripe } from '@stripe/stripe-js';
-import { checkoutorder } from '@/lib/actions/order.actions';
+import { checkoutOrder } from '@/lib/actions/order.actions';
 
 loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -33,7 +33,7 @@ const Checkout = ({ event, userId }: {event:IEvent, userId:string}) => {
         buyerId: userId
      }
 
-     await checkoutorder(order)
+     await checkoutOrder(order)
     }
 
   return (
